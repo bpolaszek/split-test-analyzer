@@ -9,7 +9,7 @@
 
 This PHP tool will help you compute, for different versions of a split test, their probability to be the best one.
 
-It is a PHP portage of the JS tool used on [AB split test graphical Bayesian calculator](https://www.peakconversion.com/2012/02/ab-split-test-graphical-calculator/).
+It is a PHP port of the JS tool used on [AB split test graphical Bayesian calculator](https://www.peakconversion.com/2012/02/ab-split-test-graphical-calculator/).
 
 Concept
 -------

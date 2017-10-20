@@ -2,7 +2,7 @@
 
 namespace BenTools\SplitTestAnalyzer;
 
-final class SplitTestAnalyzer
+final class SplitTestAnalyzer implements \IteratorAggregate
 {
 
     const DEFAULT_SAMPLES = 5000;
@@ -119,6 +119,12 @@ final class SplitTestAnalyzer
         return $this->result;
     }
 
+    public function getIterator()
+    {
+        $result = $this->getResult();
+        yield from $result;
+    }
+
     /**
      * @return mixed
      * @throws \Exception
@@ -202,6 +208,10 @@ final class SplitTestAnalyzer
      */
     private function getRandg(float $shape): float
     {
+        if (0.0 === $shape) {
+            return 0;
+        }
+
         $oalph = $shape;
         $a1 = $a2 = $u = $v = $x = null;
 
@@ -243,6 +253,9 @@ final class SplitTestAnalyzer
      */
     private function getSample(float $alpha, float $beta): float
     {
+        if (0.0 === $alpha) {
+            return 0.0;
+        }
         $u = $this->getRandg($alpha);
         return $u / ($u + $this->getRandg($beta));
     }
