@@ -48,6 +48,33 @@ class SplitTestAnalyzerTest extends TestCase
         $this->assertEquals($this->variations[1], $test->getBestVariation());
     }
 
+    public function testNoSuccessfulAction()
+    {
+        $test = SplitTestAnalyzer::create()->withVariations(new Variation('foo', 123456, 0), new Variation('bar', 654321, 0));
+        $this->assertEquals(['foo' => 0.0, 'bar' => 0.0], iterator_to_array($test));
+        $this->assertNull($test->getBestVariation());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage At least 2 variations to compare are expected
+     */
+    public function testNoVariation()
+    {
+        $test = SplitTestAnalyzer::create();
+        $test->getResult();
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage At least 2 variations to compare are expected
+     */
+    public function testNotEnoughVariations()
+    {
+        $test = SplitTestAnalyzer::create()->withVariations(new Variation('foo', 0, 0));
+        $test->getResult();
+    }
+
     private function assertEqualsApproximatively(float $expected, float $value, float $tolerance)
     {
         $left = $expected - $tolerance;

@@ -102,12 +102,16 @@ final class SplitTestAnalyzer implements \IteratorAggregate
     }
 
     /**
-     * @return Variation
+     * @return Variation|null
      */
-    public function getBestVariation(): Variation
+    public function getBestVariation(): ?Variation
     {
         $variations = $this->getOrderedVariations(SORT_DESC);
-        return reset($variations);
+        $best = reset($variations);
+        if ($best instanceof Variation && 0 === $best->getNbSuccesses()) {
+            return null;
+        }
+        return $best;
     }
 
     /**
@@ -154,6 +158,7 @@ final class SplitTestAnalyzer implements \IteratorAggregate
                     $winnerValue = $x;
                 }
             }
+
             if (null !== $winnerIndex) {
                 $winCount[$winnerIndex]++;
             }
