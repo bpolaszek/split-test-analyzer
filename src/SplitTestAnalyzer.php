@@ -154,7 +154,9 @@ final class SplitTestAnalyzer implements \IteratorAggregate
                     $winnerValue = $x;
                 }
             }
-            $winCount[$winnerIndex]++;
+            if (null !== $winnerIndex) {
+                $winCount[$winnerIndex]++;
+            }
         }
 
         foreach ($variations as $v => $variation) {
